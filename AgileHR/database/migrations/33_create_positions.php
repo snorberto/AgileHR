@@ -16,18 +16,20 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->increments('ID');
             $table->unsignedInteger('opener_id');
-            $table->string('sprint_label');
+            $table->unsignedInteger('sprint_id');
             $table->integer('story_points');
             //$table->string('team');
-            $table->unsignedInteger('ticket_status');
+            $table->unsignedInteger('position_status');
             $table->string('Description');
             $table->unsignedInteger('assignee_id');
             $table->binary('attachment');
+            $table->unsignedInteger('PriorityOrder');
             $table->timestamps();
 
             $table->foreign('opener_id')->references('ID')->on('Users');
+            $table->foreign('sprint_id')->references('ID')->on('Sprints');
             $table->foreign('assignee_id')->references('ID')->on('Roles');
-            $table->foreign('ticket_status')->references('ID')->on('ticket_statuses');
+            $table->foreign('position_status')->references('ID')->on('position_statuses');
         });
     }
 

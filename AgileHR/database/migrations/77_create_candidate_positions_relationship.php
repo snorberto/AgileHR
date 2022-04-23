@@ -17,13 +17,10 @@ return new class extends Migration
             $table->increments('ID');
             $table->unsignedInteger('candidate_id');
             $table->unsignedInteger('position_id');
-            $table->unsignedInteger('status_id');
+            $table->unsignedInteger('candidate_status_id');
+            $table->unsignedInteger('position_status_id');
             $table->string('Comment');
             $table->timestamps();
-
-            $table->foreign('candidate_id')->references('ID')->on('candidate_details');
-            $table->foreign('position_id')->references('ID')->on('positions');
-            $table->foreign('status_id')->references('ID')->on('ticket_statuses');
         });
     }
 

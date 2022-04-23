@@ -1,0 +1,104 @@
+
+/*index page settings:*/
+#mainFrame { 
+    font-family: 'Poppins', sans-serif; 
+  }
+
+.contentDiv{
+    font-size: 13pt;
+    width: 85%;
+    height: 100%;
+}
+
+.navbarDiv{
+    font-size: 13pt;
+    border-right: 2px solid #73AD21;
+    width: 200px;
+    height: 100vh;
+}
+
+/*header page settings:*/
+.topnav {
+    overflow: hidden;
+    border-bottom: #73AD21 solid 2px;
+  }
+  
+  .topnav p {
+    float: left;
+    display: block;
+    color: #73AD21;
+    text-align: left;
+    padding: 1px 2px;
+    text-decoration: none;
+    font-size: 36px;
+    margin-top: 5px;
+  }   
+ 
+  .topnav .search-container {
+    float: right;
+  }
+  
+  .topnav input[type=text] {
+    padding: 6px;
+    margin-top: 70px;
+    margin-bottom:5px;
+    font-size: 13px;
+    border: solid #73AD21 2px;
+    
+  }
+  
+  .topnav .search-container button {
+    float: right;
+    padding: 8px 10px;
+    margin-top: 70px;
+    margin-bottom:5px;
+    margin-right: 16px;
+    background: #ccc;
+    font-size: 13px;
+    border: none;
+    cursor: pointer;
+    
+  }
+  
+  .topnav .search-container button:hover {
+    background: #ddd;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .topnav .search-container {
+      float: none;
+    }
+    .topnav p, .topnav input[type=text], .topnav .search-container button {
+      float: none;
+      display: block;
+      text-align: left;
+      width: 100%;
+      margin: 0;
+      padding: 14px;
+    }
+    .topnav input[type=text] {
+      border: 1px solid #ccc;  
+    }
+  }
+
+/*side navbar page settings:*/
+
+.vertical-menu {
+    margin-top: 2px;
+  }
+  
+  .vertical-menu a {
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+  }
+  
+  .vertical-menu a:hover {
+    background-color: #ccc;
+  }
+  
+  .vertical-menu a.active {
+    background-color: #73AD21;
+    color: white;
+  }

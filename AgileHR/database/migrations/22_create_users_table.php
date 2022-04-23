@@ -17,7 +17,7 @@ return new class extends Migration
            $table->increments('ID');
            $table->string('Name')->nullable(false);
            $table->string('username')->nullable(false);
-           $table->string('password')->nullable(false);
+           $table->string('password', 100)->nullable(false);
            $table->unsignedInteger('RoleID')->nullable(false);           
            $table->binary('isAdmin')->default(0);
            $table->timestamps();
