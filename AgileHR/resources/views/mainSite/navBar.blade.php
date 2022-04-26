@@ -1,9 +1,10 @@
 @section("navBar")
 <div class="vertical-menu">
-  <a href="#" class="active">Active sprint board</a>
+  <a href="/activeSprintView">Active sprint board</a>
   <a href="#">Backlog view</a>
-
   <a href="#">Manage users</a>
+  <a href="/manageSprints">Manage Sprints</a>
+  <a href="#">Create new position</a>
+  <a href="#">Create new candidate entry</a>
 
-  <a href="#">Manage sprints</a>
 </div>

@@ -1,21 +1,47 @@
 
 /*index page settings:*/
-#mainFrame { 
+* { 
     font-family: 'Poppins', sans-serif; 
+    box-sizing: border-box;
   }
 
-.contentDiv{
-    font-size: 13pt;
-    width: 85%;
-    height: 100%;
+body {
+    margin: 0;
 }
 
-.navbarDiv{
-    font-size: 13pt;
-    border-right: 2px solid #73AD21;
-    width: 200px;
-    height: 100vh;
+/* Page layout */
+.column {
+  float: left;
+  padding: 10px;
 }
+
+/* Left column */
+.column.side {
+  width: 25%;
+  border-right: #73AD21 solid 2px;
+  height: 100vh;
+}
+
+/* Middle column */
+.column.middle {
+  width: 50%;
+}
+
+/*if screen collapses:*/
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/***************************************/
 
 /*header page settings:*/
 .topnav {
@@ -23,6 +49,7 @@
     border-bottom: #73AD21 solid 2px;
   }
   
+  /*Logo*/
   .topnav p {
     float: left;
     display: block;
@@ -34,6 +61,7 @@
     margin-top: 5px;
   }   
  
+  /*Search bar attributes:*/
   .topnav .search-container {
     float: right;
   }
@@ -79,8 +107,10 @@
     .topnav input[type=text] {
       border: 1px solid #ccc;  
     }
-  }
+ }
 
+ /**********************************/
+ 
 /*side navbar page settings:*/
 
 .vertical-menu {
@@ -101,4 +131,10 @@
   .vertical-menu a.active {
     background-color: #73AD21;
     color: white;
+  }
+
+  .alert-danger{
+    background-color: crimson;
+    color: black;
+    font-weight: bold;
   }

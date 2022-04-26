@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('position_id');
             $table->unsignedInteger('candidate_status_id');
             $table->unsignedInteger('position_status_id');
+            $table->unsignedInteger('assignee_id');
             $table->string('Comment');
             $table->timestamps();
         });

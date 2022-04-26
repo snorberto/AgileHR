@@ -10,17 +10,21 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
         <style>
         <?php include '../resources/css/app.css' ?>
+        <?php include '../resources/css/subContents.css' ?>
         </style>
     </head>
     <body id="mainFrame">       
         <header role="banner" id="mainHeader">
             @include("mainSite.header")
         </header>
-        <div id="mainNavbar" class="navbarDiv">
-            @include("mainSite.navBar")
-        </div>
-        <div id="mainContent" class="contentDiv">
-            @yield("content")
+        <div class="row">
+            <div class="column side">
+                @include("mainSite.navBar")
+            </div>
+            
+            <div class="column middle">
+                @yield("content")
+            </div>            
         </div>
     </body>
 </html>

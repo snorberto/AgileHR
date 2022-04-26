@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('ID');
             $table->string('sprint_name');
             $table->boolean('is_active');
-            $table->boolean('is_closed');
+            $table->boolean('is_closed')->default(0);
             $table->timestamps();
         });
     }
