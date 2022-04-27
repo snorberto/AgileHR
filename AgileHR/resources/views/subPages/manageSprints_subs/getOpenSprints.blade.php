@@ -29,7 +29,7 @@
     </table>
 @else 
     <div class="miniheader-subContents">
-        <h5>No open sprints available.</h3>
+        <h5>No open sprints available.</h5>
     </div>
 @endif
 </div>

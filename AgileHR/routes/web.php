@@ -34,6 +34,11 @@ Route::get('createSprint', function () {
     return view('subPages.manageSprints_subs.createSprint');
 });
 
+
+Route::get('manageUsers', function () {
+    return view('subPages.manageUsers');
+});
+
 //Methods per subpages:
 //manageSprints:
 Route::resource('Sprints',"App\Http\Controllers\SprintsController");
@@ -43,3 +48,9 @@ Route::post('createNewSprint', 'App\Http\Controllers\SprintsController@createNew
 Route::get("manageSprint_deleteSelectedSprint/{id}", "App\Http\Controllers\SprintsController@deleteSprint");
 Route::get("manageSprint_SelectSprint/{id}", "App\Http\Controllers\SprintsController@SelectSprint");
 Route::post("manageSprint_updateSelectedSprint/{id}", "App\Http\Controllers\SprintsController@editSelectedSprint");
+
+//manageUsers:
+Route::resource('User',"App\Http\Controllers\UserController");
+Route::get('getAllUsers',"App\Http\Controllers\UserController@showAllUsers");
+Route::get('createUser',"App\Http\Controllers\UserController@setUpCreateUser");
+Route::post('AddNewUser',"App\Http\Controllers\UserController@AddNewUser");

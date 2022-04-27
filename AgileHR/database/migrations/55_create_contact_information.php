@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('ContactInfo_value');            
             $table->timestamps();
 
-            $table->foreign('candidate_id')->references('ID')->on('candidate_details');
-            $table->foreign('contact_type_id')->references('ID')->on('contact_information_types');
+            /*$table->foreign('candidate_id')->references('ID')->on('candidate_details');
+            $table->foreign('contact_type_id')->references('ID')->on('contact_information_types');*/
         });
     }
 

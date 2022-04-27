@@ -39,5 +39,10 @@ class RolePermissionSeeder extends Seeder
             //string('RoleDescription');
             'RoleDescription' => 'Hiring Manager'
         ]);
+
+        DB::table('role_permissions')->insert([
+            //string('RoleDescription');
+            'RoleDescription' => 'Admin'
+        ]);
     }
 }

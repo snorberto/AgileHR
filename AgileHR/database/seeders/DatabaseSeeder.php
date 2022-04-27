@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             PositionStatusesSeeder::class,
             CandidateStatusSeeder::class,
             ContactInfoSeeder::class,
-            LabelTypeSeeder::class
+            LabelTypeSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

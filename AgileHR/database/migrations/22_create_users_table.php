@@ -18,11 +18,12 @@ return new class extends Migration
            $table->string('Name')->nullable(false);
            $table->string('username')->nullable(false);
            $table->string('password', 100)->nullable(false);
+           $table->string('email');
            $table->unsignedInteger('RoleID')->nullable(false);           
-           $table->binary('isAdmin')->default(0);
+           $table->integer('isAdmin')->default(0);
            $table->timestamps();
 
-           $table->foreign('RoleID')->references('ID')->on('Roles');
+           /*$table->foreign('RoleID')->references('ID')->on('Roles');*/
            
         });
     }

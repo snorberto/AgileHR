@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamps();
            
 
-            $table->foreign('Permission_id')->references('ID')->on('role_permissions');
+            /*$table->foreign('Permission_id')->references('ID')->on('role_permissions');*/
 
         });
     }

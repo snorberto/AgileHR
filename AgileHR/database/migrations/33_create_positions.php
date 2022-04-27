@@ -26,10 +26,10 @@ return new class extends Migration
             $table->unsignedInteger('PriorityOrder');
             $table->timestamps();
 
-            $table->foreign('opener_id')->references('ID')->on('Users');
+            /*$table->foreign('opener_id')->references('ID')->on('Users');
             $table->foreign('sprint_id')->references('ID')->on('Sprints');
             $table->foreign('assignee_id')->references('ID')->on('Roles');
-            $table->foreign('position_status')->references('ID')->on('position_statuses');
+            $table->foreign('position_status')->references('ID')->on('position_statuses');*/
         });
     }
 
