@@ -48,5 +48,5 @@
             <td><input type="submit" name="add" class="" value="Add" /></td>
         </tr>
     </form>
-
+</table>
 @stop

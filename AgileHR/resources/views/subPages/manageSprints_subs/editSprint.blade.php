@@ -4,7 +4,7 @@
 <div class="miniheader-subContents">
     <h3>Edit selected sprint</h3>
 </div>
-{{$data['ID']}}
+
 <div class="activitySite-subContents">
     <table class="formTable">
     <form method="post" action=/{{"manageSprint_updateSelectedSprint/".$data['ID']}} enctype="multipart/form-data">

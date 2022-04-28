@@ -39,6 +39,11 @@ Route::get('manageUsers', function () {
     return view('subPages.manageUsers');
 });
 
+Route::get('searchUser', function () {
+    return view('subPages.manageUser_subs.searchUser');
+});
+
+
 //Methods per subpages:
 //manageSprints:
 Route::resource('Sprints',"App\Http\Controllers\SprintsController");
@@ -54,3 +59,20 @@ Route::resource('User',"App\Http\Controllers\UserController");
 Route::get('getAllUsers',"App\Http\Controllers\UserController@showAllUsers");
 Route::get('createUser',"App\Http\Controllers\UserController@setUpCreateUser");
 Route::post('AddNewUser',"App\Http\Controllers\UserController@AddNewUser");
+Route::post('StartSearchUser',"App\Http\Controllers\UserController@ReturnSearchUserResults");
+Route::get('manageRoles',"App\Http\Controllers\UserController@showAllRoles");
+Route::post('AddNewRole',"App\Http\Controllers\UserController@AddNewRole");
+Route::get("manageRole_deleteSelectedRole/{id}", "App\Http\Controllers\UserController@deleteRole");
+Route::get("manageRole_SelectRole/{id}", "App\Http\Controllers\UserController@SelectRole");
+Route::post("manageRole_updateSelectedRole/{id}", "App\Http\Controllers\UserController@editSelectedRole");
+Route::get("manageUser_deleteSelectedUser/{id}", "App\Http\Controllers\UserController@deleteUser");
+Route::get("manageUser_SelectUser/{id}", "App\Http\Controllers\UserController@SelectUser");
+Route::post("manageUser_updateSelectedUser/{id}", "App\Http\Controllers\UserController@editSelectedUser");
+
+
+
+
+
+
+
+

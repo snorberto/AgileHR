@@ -2,7 +2,7 @@
 @section("manageUserSubContent")
 
 <div class="miniheader-subContents">
-    <h3>All users</h3>
+    <h3>Search users results</h3>
 </div>
 <div class="activitySite-subContents">
 @if(!$users->isEmpty())
@@ -27,17 +27,16 @@
             <td>@if(is_null($u['created_at'])) - @else {{$u['created_at']}} @endif</td>
             <td>@if(is_null($u['updated_at'])) - @else {{$u['updated_at']}} @endif</td>
             <td>
-                @if($u['isAdmin'] != 1)
-                <a href={{"manageUser_deleteSelectedUser/".$u['ID']}}>Delete User</a>
-                <a href={{"manageUser_SelectUser/".$u['ID']}}>Edit User</a> 
-                @endif
+                <a href=#>Delete User</a>
+                <a href=#>Edit User</a> 
             </td>       
         </tr>
         @endforeach
+        {{ $users->links() }}
     </table>
 @else 
     <div class="miniheader-subContents">
-        <h5>No users available </h5>
+        <h5>No users available. </h5>
     </div>
 @endif
 </div>
