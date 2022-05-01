@@ -22,7 +22,7 @@
                 @include("mainSite.navBar")
             </div>
             
-            <div class="column middle">
+            <div class="column middle">               
                 @yield("content")
             </div>            
         </div>

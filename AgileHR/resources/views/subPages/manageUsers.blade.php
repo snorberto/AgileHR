@@ -5,6 +5,12 @@
     <h1>Manage users</h1>
 </div>
 
+@if (session('success'))
+    <div class="alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+<br>
 <div class="navigation-subContents">
     <a href="/getAllUsers">Get all users</a>
     <a href="/createUser">Create new user</a>

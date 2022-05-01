@@ -1,3 +1,7 @@
+/*@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';*/
+
 
 /*index page settings:*/
 * { 
@@ -41,6 +45,39 @@ body {
   clear: both;
 }
 
+.validation_errors{
+  background-color: crimson;
+  color: black;
+  font-weight: bold;
+}
+
+.loginButton{
+  background-color: darkgrey;
+  color: black;
+  text-decoration: none;
+  border:none;
+}
+
+.alert-success{
+  background-color: #73AD21;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  animation: hideMe 5s forwards;
+}
+
+
+@keyframes hideMe{
+  0%{
+      opacity: 1;
+  }
+  99.99%{
+      opacity: 1;
+  }
+  100%{
+      opacity: 0;
+  }
+}
 /***************************************/
 
 /*header page settings:*/
@@ -62,36 +99,15 @@ body {
   }   
  
   /*Search bar attributes:*/
-  .topnav .search-container {
+  .topnav .loginlink {
     float: right;
-  }
-  
-  .topnav input[type=text] {
+    text-decoration: none;
+    font-size: 20px;
     padding: 6px;
-    margin-top: 70px;
+    margin-top: 50px;
     margin-bottom:5px;
-    font-size: 13px;
-    border: solid #73AD21 2px;
-    
   }
-  
-  .topnav .search-container button {
-    float: right;
-    padding: 8px 10px;
-    margin-top: 70px;
-    margin-bottom:5px;
-    margin-right: 16px;
-    background: #ccc;
-    font-size: 13px;
-    border: none;
-    cursor: pointer;
-    
-  }
-  
-  .topnav .search-container button:hover {
-    background: #ddd;
-  }
-  
+
   @media screen and (max-width: 500px) {
     .topnav .search-container {
       float: none;

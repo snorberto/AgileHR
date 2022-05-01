@@ -21,6 +21,7 @@ return new class extends Migration
            $table->string('email');
            $table->unsignedInteger('RoleID')->nullable(false);           
            $table->integer('isAdmin')->default(0);
+           $table->string('remember_token', 100)->nullable(true);
            $table->timestamps();
 
            /*$table->foreign('RoleID')->references('ID')->on('Roles');*/

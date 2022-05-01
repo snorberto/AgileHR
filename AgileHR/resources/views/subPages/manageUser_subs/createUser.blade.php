@@ -30,7 +30,7 @@
         <tr> 
             <td><input type="text" name="Name" class="" required/></td>
             <td><input type="text" name="username" class="" required/></td>
-            <td><input type="text" name="userPassword" class="" required/></td>
+            <td><input type="password" name="userPassword" class="" required /></td>
             <td><input type="text" name="userEmail" class="" required/></td>
             <td><select name="selectedRole">
                     @foreach($roles as $r)

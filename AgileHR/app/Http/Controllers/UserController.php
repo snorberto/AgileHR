@@ -58,7 +58,7 @@ class UserController extends Controller
         ->where('email', 'LIKE', '%'.$req->Searchbox_user.'%')
         ->select('users.*', 'role_permissions.RoleDescription')
         ->union($searchByUserName)
-        ->paginate(15);
+        ->get();
 
 
         $users = $searchByEmail;

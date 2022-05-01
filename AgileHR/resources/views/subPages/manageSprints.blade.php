@@ -5,6 +5,12 @@
     <h1>Manage sprints</h1>
 </div>
 
+@if (session('success'))
+    <div class="alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+<br>
 <div class="navigation-subContents">
     <a href="/getOpenSprints">List of open sprints</a>
     <a href="/createSprint">Create new sprint</a>

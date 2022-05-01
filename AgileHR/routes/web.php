@@ -13,10 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//simple get views:
+
+
 Route::get('/', function () {
     return view('mainSite.index');
 });
+
+Route::get('/dashboard', function () {
+    return view('mainSite.index');
+})->middleware(['auth'])->name('mainSite.index');
+
+require __DIR__.'/auth.php';
+
+Route::get('logout', "App\Http\Controllers\Auth\AuthenticatedSessionController@destroy");
 
 Route::get('activeSprintView', function () {
     return view('subPages.ActiveSprintview');
@@ -41,6 +50,23 @@ Route::get('manageUsers', function () {
 
 Route::get('searchUser', function () {
     return view('subPages.manageUser_subs.searchUser');
+});
+
+Route::get('managePosition', function () {
+    return view('subPages.managePosition');
+});
+
+
+Route::get('createPosition', function() {
+    return view('subPages.managePosition_subs.getAllpositions');
+});
+
+Route::get('createPosition', function() {
+    return view('subPages.managePosition_subs.CreatePosition');
+});
+
+Route::get('searchPosition', function () {
+    return view('subPages.managePosition_subs.searchPosition');
 });
 
 
@@ -69,9 +95,14 @@ Route::get("manageUser_deleteSelectedUser/{id}", "App\Http\Controllers\UserContr
 Route::get("manageUser_SelectUser/{id}", "App\Http\Controllers\UserController@SelectUser");
 Route::post("manageUser_updateSelectedUser/{id}", "App\Http\Controllers\UserController@editSelectedUser");
 
-
-
-
+//manage Positions:
+Route::resource('Position',"App\Http\Controllers\PositionsController");
+Route::get('getAllpositions',"App\Http\Controllers\PositionsController@getAllpositions");
+Route::post('AddNewPosition',"App\Http\Controllers\PositionsController@AddNewPosition");
+Route::post('StartSearchPosition',"App\Http\Controllers\PositionsController@StartSearchPosition");
+Route::get("managePositions_deleteSelectedPosition/{id}", "App\Http\Controllers\PositionsController@deletePosition");
+Route::get("managePositions_SelectPosition/{id}", "App\Http\Controllers\PositionsController@SelectPosition");
+Route::post("managePosition_updateSelectedPosition/{id}", "App\Http\Controllers\PositionsController@editSelectedPosition");
 
 
 

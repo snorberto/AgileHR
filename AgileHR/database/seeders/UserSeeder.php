@@ -17,13 +17,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $RoleID = DB::table('role_permissions')->where('RoleDescription', 'Admin')->first();
+        $RoleID = DB::table('role_permissions')->select('ID')->where('RoleDescription', 'Admin')->first();
         DB::table('users')->insert([
             'Name' => Str::random(10),
             'username' => "admin",
             'email' => "admin".'@yourcompany.com',
             'password' => Hash::make('password'),
-            'RoleID' => 6,
+            'RoleID' => $RoleID->ID,
             'isAdmin' => 1,
         ]);
     }

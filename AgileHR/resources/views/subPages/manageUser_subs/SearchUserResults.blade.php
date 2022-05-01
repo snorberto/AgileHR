@@ -27,12 +27,13 @@
             <td>@if(is_null($u['created_at'])) - @else {{$u['created_at']}} @endif</td>
             <td>@if(is_null($u['updated_at'])) - @else {{$u['updated_at']}} @endif</td>
             <td>
-                <a href=#>Delete User</a>
-                <a href=#>Edit User</a> 
+                @if(!$u['isAdmin']==1)
+                <a href={{"manageUser_deleteSelectedUser/".$u['ID']}}>Delete User</a>
+                <a href={{"manageUser_SelectUser/".$u['ID']}}>Edit User</a> 
+                @endif
             </td>       
         </tr>
         @endforeach
-        {{ $users->links() }}
     </table>
 @else 
     <div class="miniheader-subContents">
