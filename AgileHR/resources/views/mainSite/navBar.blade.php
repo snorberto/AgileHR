@@ -11,7 +11,7 @@
     <a href="/manageSprints">Manage Sprints</a>
     @endif
     <a href="/managePosition">Position manager</a>
-    <a href="#">Create new candidate entry</a>
+    <a href="/manageCandidate">Candidate manager</a>
   @endauth
 
 </div>

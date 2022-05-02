@@ -19,8 +19,6 @@ return new class extends Migration
             $table->unsignedInteger('label_type_id');
             $table->timestamps();
 
-            $table->foreign('candidate_id')->references('ID')->on('candidate_details');
-            $table->foreign('label_type_id')->references('ID')->on('label_types');
         });
     }
 

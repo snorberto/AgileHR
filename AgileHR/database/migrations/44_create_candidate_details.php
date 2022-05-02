@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('candidate_details', function (Blueprint $table) {
             $table->increments('ID');
             $table->string('Name');
-            $table->string('Description');
-            $table->binary('Attachments');
-            $table->string('Link');
+            $table->string('Description', 10000)->nullable(true);
+            $table->string('Attachments')->nullable(true);
+            $table->string('Link')->nullable(true);
             $table->timestamps();
         });
     }

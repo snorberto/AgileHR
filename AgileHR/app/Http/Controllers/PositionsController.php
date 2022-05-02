@@ -22,7 +22,7 @@ class PositionsController extends Controller
     }
 
     public function AddNewPosition(Request $req){
-        //Add new user
+        //Add new position
         $maxPrioID = Positions::max('PriorityOrder');
         if(!$maxPrioID){
             $maxPrioID = 0;

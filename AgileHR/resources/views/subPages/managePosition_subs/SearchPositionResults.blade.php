@@ -27,7 +27,7 @@
             <td>
                 <a href={{"managePositions_deleteSelectedPosition/".$p['ID']}}>Delete Position</a>
                 <br>
-                <a href=#>Edit Position</a> 
+                <a href={{"managePositions_SelectPosition/".$p['ID']}}>Edit Position</a> 
             </td>       
         </tr>
         @endforeach

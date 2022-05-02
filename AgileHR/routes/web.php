@@ -69,6 +69,14 @@ Route::get('searchPosition', function () {
     return view('subPages.managePosition_subs.searchPosition');
 });
 
+Route::get('manageCandidate', function () {
+    return view('subPages.manageCandidate');
+});
+
+Route::get('createCandidate', function() {
+    return view('subPages.manageCandidate_subs.CreateCandidate');
+});
+
 
 //Methods per subpages:
 //manageSprints:
@@ -103,6 +111,24 @@ Route::post('StartSearchPosition',"App\Http\Controllers\PositionsController@Star
 Route::get("managePositions_deleteSelectedPosition/{id}", "App\Http\Controllers\PositionsController@deletePosition");
 Route::get("managePositions_SelectPosition/{id}", "App\Http\Controllers\PositionsController@SelectPosition");
 Route::post("managePosition_updateSelectedPosition/{id}", "App\Http\Controllers\PositionsController@editSelectedPosition");
+
+//manage Candidates:
+Route::resource('Candidate',"App\Http\Controllers\CandidatesController");
+Route::post('AddNewCandidate',"App\Http\Controllers\CandidatesController@AddNewCandidate");
+Route::get('getAllCandidates',"App\Http\Controllers\CandidatesController@getAllCandidates");
+Route::get("manageCandidate_deleteSelectedCandidate/{id}", "App\Http\Controllers\CandidatesController@deleteCandidate");
+Route::get("manageCandidate_SelectCandidate/{id}", "App\Http\Controllers\CandidatesController@SelectCandidate");
+Route::post('manageCandidate_addNewContactInfo/{id}',"App\Http\Controllers\CandidatesController@AddNewContactInfo");
+Route::post('manageCandidate_updateSelectedCandidate_details/{id}',"App\Http\Controllers\CandidatesController@UpdateSelectedCandidate");
+Route::get("manageCandidate_deleteSelectedContactInfo/{id}{canID}", "App\Http\Controllers\CandidatesController@DeleteSelectedContactInfo");
+Route::post('manageCandidate_addNewLabel/{id}',"App\Http\Controllers\CandidatesController@AddNewLabel");
+Route::get("manageCandidate_deleteSelectedLabel/{id}{canID}", "App\Http\Controllers\CandidatesController@DeleteSelectedLabel");
+
+
+
+
+
+
 
 
 
