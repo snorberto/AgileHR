@@ -1,6 +1,6 @@
 @extends("subPages.managePosition")
 @section("managePositionSubContent")
-
+<?php $viewName="searchPosResults" ?>
 <div class="miniheader-subContents">
     <h3>Search position results</h3>
 </div>
@@ -18,7 +18,7 @@
         </tr>
         @foreach($positions as $p)
         <tr>
-            <td><a href=#>{{$p['Title']}}</a></td>
+            <td><b><a href="{{ route('managePositions_SelectPosition', [$p['ID'], $viewName]) }}">{{$p['Title']}}</a></b></td>
             <td>{{$p['username']}}</td>
             <td>@if(!is_null($p['assignee_username'])) {{$p['assignee_username']}} @else - @endif</td>
             <td>{{$p['PositionStatus']}}
@@ -27,7 +27,7 @@
             <td>
                 <a href={{"managePositions_deleteSelectedPosition/".$p['ID']}}>Delete Position</a>
                 <br>
-                <a href={{"managePositions_SelectPosition/".$p['ID']}}>Edit Position</a> 
+                <a href="{{ route('managePositions_SelectPosition', [$p['ID'], $viewName]) }}">Edit Position</a> 
             </td>       
         </tr>
         @endforeach

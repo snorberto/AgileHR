@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('candidate_positions_relationship', function (Blueprint $table) {
             $table->increments('ID');
-            $table->unsignedInteger('candidate_id');
-            $table->unsignedInteger('position_id');
-            $table->unsignedInteger('candidate_status_id');
-            $table->unsignedInteger('position_status_id');
-            $table->unsignedInteger('assignee_id');
-            $table->string('Comment');
+            $table->unsignedInteger('candidate_id')->nullable(false);
+            $table->unsignedInteger('position_id')->nullable(false);
+            $table->unsignedInteger('candidate_status_id')->nullable(false);
+            $table->unsignedInteger('position_status_id')->nullable(false);
+            $table->unsignedInteger('assignee_id')->nullable(true);
+            $table->string('Comment')->nullable(true);
             $table->timestamps();
         });
     }

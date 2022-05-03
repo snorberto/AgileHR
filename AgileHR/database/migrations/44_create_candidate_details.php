@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('candidate_details', function (Blueprint $table) {
             $table->increments('ID');
-            $table->string('Name');
+            $table->string('Name')->nullable(false);
             $table->string('Description', 10000)->nullable(true);
             $table->string('Attachments')->nullable(true);
             $table->string('Link')->nullable(true);

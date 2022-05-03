@@ -22,7 +22,7 @@
             <td>@if(is_null($r['updated_at'])) - @else {{$r['updated_at']}} @endif</td>
             <td>
                 @if($r['RoleDescription'] != "Admin" && $r['RoleDescription'] != "Scrum Master")
-                <a href={{"manageRole_deleteSelectedRole/".$r['ID']}}>Delete Role</a>
+                <!--<a href={{"manageRole_deleteSelectedRole/".$r['ID']}}>Delete Role</a>-->
                 <a href={{"manageRole_SelectRole/".$r['ID']}}>Edit Role</a> 
                 @endif
             </td>       

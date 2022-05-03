@@ -1,6 +1,6 @@
 @extends("subPages.managePosition")
 @section("managePositionSubContent")
-
+<?php $viewName = 'getAllPos'; ?>
 <div class="miniheader-subContents">
     <h3>All positions</h3>
 </div>
@@ -17,7 +17,7 @@
         </tr>
         @foreach($positions as $p)
         <tr>
-            <td><a href=#>{{$p['Title']}}</a></td>
+            <td><b><a href="{{ route('managePositions_SelectPosition', [$p['ID'], $viewName]) }}">{{$p['Title']}}</a></b></td>
             <td>{{$p['PositionStatus']}}</td>
             <td>{{$p['username']}}</td>
             <td>{{$p['created_at']}}</td>
@@ -25,7 +25,7 @@
             <td>
                 <a href={{"managePositions_deleteSelectedPosition/".$p['ID']}}>Delete Position</a>
                 <br>
-                <a href={{"managePositions_SelectPosition/".$p['ID']}}>Edit Position</a> 
+                <a href="{{ route('managePositions_SelectPosition', [$p['ID'], $viewName]) }}">Edit Position</a> 
             </td>       
         </tr>
         @endforeach

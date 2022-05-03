@@ -8,6 +8,9 @@
 <table class="formTable">
     <form id="updateForm" method="post" action=/{{"manageCandidate_updateSelectedCandidate_details/".$can_details['ID']}} enctype="multipart/form-data">
     @csrf
+        <tr>
+            <td colspan=4><a href=#><b>View candidate history</b></a></td>
+        </tr>
         <tr>            
             <td colspan=2><b>Name</b></td>
             <td colspan=2><input type="text" name="can_name" value="{{ $can_details->Name }}" required/></td>
@@ -110,6 +113,46 @@
         </form>
     </tr>
 </table>
-
-
+<div class="miniheader-subContents">
+    <h3>Latest position applications</h3>
+</div>
+    @if($latestEntries->count() > 0)
+        <table class="formTable">
+            <tr>
+                <td colspan=7><b>Positions</b></td>            
+            </tr>
+            <tr>
+                <th>Position title</th>
+                <th>Candidate's status</th>
+                <th>Position's status at update </th>
+                <th>Assignee</th>
+                <th>Comment</th>
+                <th>Created at</th>
+                <th>Updated at</th>
+            </tr>
+                @foreach($latestEntries as $le)
+                    <tr>
+                        <td>{{$le->Title}}</td>
+                        <td>{{$le->CandidateStatus}}</td>
+                        <td>{{$le->PositionStatus}}</td>
+                        @if(!is_null($le->username))
+                            <td>{{$le->username}}</td>
+                        @else
+                            <td>-</td>
+                        @endif
+                        @if(!is_null($le->Comment))
+                            <td>{{$le->Comment}}</td>
+                        @else
+                            <td>-</td>
+                        @endif
+                        <td>{{$le->created_at}}</td>
+                        <td>{{$le->updated_at}}</td>                    
+                    </tr>
+                @endforeach
+        </table>
+    @else
+        <div class="miniheader-subContents">
+            <h5>No position applications yet.</h5>
+        </div>
+    @endif
 @stop

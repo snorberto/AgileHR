@@ -6,8 +6,18 @@
 </div>
 
 <table class="formTable">
+    <tr>
+        <td colspan=2><b><a href=/{{"relship_showHistory/".$data['ID']}}>View position History</a></b></td>
+        @if(is_null($relship))
+            <td colspan=2>Cannot set position to Closed, no suitable candidate yet.</td>
+        @else        
+            <td colspan=2><b><a href="{{ route('relship_closePosition', [$data['ID'], $view]) }}">Close position</a></b></td>
+            
+        @endif
+    </tr>
     <form method="post" action=/{{"managePosition_updateSelectedPosition/".$data['ID']}} enctype="multipart/form-data">
     @csrf
+        <input type="hidden" name="editPos_siteName" value="{{$view}}" />
         <tr>            
             <td><b>Title</b></td>
             <td><input type="text" name="pos_title" value="{{ $data->Title }}" /></td>
@@ -15,7 +25,14 @@
             <td><select name="selected_pos_status">
                         <option value="">-</option>
                         @foreach($pos_status as $pos_stat)
-                        <option value="{{$pos_stat['ID']}}" @if($pos_stat['ID'] == $data['position_status']) selected @endif >{{$pos_stat['PositionStatus']}} </option>
+                            @if($pos_stat['ID'] == 4 && !is_null($relship))
+                                <option value="{{$pos_stat['ID']}}" @if($pos_stat['ID'] == $data['position_status']) selected @endif >{{$pos_stat['PositionStatus']}} </option>
+                            @elseif($pos_stat['ID'] == 4 && is_null($relship))
+                                @continue
+                            @else
+                                <option value="{{$pos_stat['ID']}}" @if($pos_stat['ID'] == $data['position_status']) selected @endif >{{$pos_stat['PositionStatus']}} </option>
+                            @endif       
+
                         @endforeach
                 </select></td>
         </tr>
@@ -70,4 +87,102 @@
 
     </form>
 </table>
+
+<div class="miniheader-subContents">
+    <h3>Candidates that applied to the position</h3>
+</div>
+@if($latestEntries->count() > 0)
+    <table class="formTable">
+        <tr>
+            <td colspan=7><b>Candidates</b></td>            
+        </tr>
+        <tr>
+            <th>Candidate Name</th>
+            <th>Candidate's status</th>
+            <th>Position's status at update </th>
+            <th>Assignee</th>
+            <th>Comment</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+        </tr>
+
+            @foreach($latestEntries as $le)
+                <tr>
+                    <td>{{$le->Name}}</td>
+                    <td>{{$le->CandidateStatus}}</td>
+                    <td>{{$le->PositionStatus}}</td>
+                    @if(!is_null($le->username))
+                        <td>{{$le->username}}</td>
+                    @else
+                        <td>-</td>
+                    @endif
+                    @if(!is_null($le->Comment))
+                        <td>{{$le->Comment}}</td>
+                    @else
+                        <td>-</td>
+                    @endif
+                    <td>{{$le->created_at}}</td>
+                    <td>{{$le->updated_at}}</td>                    
+                </tr>
+            @endforeach
+    </table>
+@else
+    <div class="miniheader-subContents">
+        <h5>No candidates applied yet.</h5>
+    </div>
+@endif
+@if($candidate_list->count() > 0)
+<form method="post" action=/{{"Relationships_addNew/".$data['ID']}} enctype="multipart/form-data">
+    @csrf
+        <input type="hidden" name="editPos_siteName" value="{{$view}}" />
+        <table class="formTable">
+            <tr>
+                <td colspan=6><b>Add new status change</b></td>
+            </tr>
+            <tr>
+                <td><b>Select candidate</b></td>
+                <td>
+                    <select name="relship_add_candidate_select">                            
+                            @foreach($candidate_list as $c)
+                                <option value="{{$c['ID']}}">{{$c['Name']}} </option>
+                            @endforeach
+                    </select>
+                </td>
+                <td><b>Select position status</b></td>
+                <td>
+                    <select name="relship_selected_pos_status">
+                            @foreach($pos_status as $pos_stat)
+                                @if($pos_stat['ID'] == 4 && !is_null($relship))
+                                    <option value="{{$pos_stat['ID']}}" @if($pos_stat['ID'] == $data['position_status']) selected @endif >{{$pos_stat['PositionStatus']}} </option>
+                                @elseif($pos_stat['ID'] == 4 && is_null($relship))
+                                    @continue
+                                @else
+                                    <option value="{{$pos_stat['ID']}}" @if($pos_stat['ID'] == $data['position_status']) selected @endif >{{$pos_stat['PositionStatus']}} </option>
+                                @endif
+                            @endforeach
+                    </select>
+                </td>
+                <td><b>Select candidate status</b></td>
+                <td>
+                    <select name="relship_add_candidate_status_select">                            
+                            @foreach($can_status as $c)
+                                <option value="{{$c['ID']}}">{{$c['CandidateStatus']}} </option>
+                            @endforeach
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Comment</b></td>
+                <td colspan=5><input type="text" name="relship_comment" size=50/></td>
+            </tr>
+            <tr>
+                <td colspan=6><input type="submit" name="add" value="Add entry" /></td>
+            </tr>
+        </table>
+</form>
+@else
+    <div class="miniheader-subContents">
+        <h5>No candidates created yet.</h5>
+    </div>
+@endif
 @stop

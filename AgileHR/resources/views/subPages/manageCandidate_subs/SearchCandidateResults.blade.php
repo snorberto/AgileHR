@@ -1,9 +1,8 @@
 @extends("subPages.manageCandidate")
 @section("manageCandidateSubContent")
 
-
 <div class="miniheader-subContents">
-    <h3>All candidates</h3>
+    <h3>Search results</h3>
 </div>
 <div class="activitySite-subContents">
 @if(!$candidates->isEmpty())
@@ -31,8 +30,9 @@
     </table>
 @else 
     <div class="miniheader-subContents">
-        <h5>No candidates available.</h5>
+        <h5>No results found.</h5>
     </div>
 @endif
 </div>
+
 @stop

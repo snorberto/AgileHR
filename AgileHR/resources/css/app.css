@@ -66,6 +66,13 @@ body {
   animation: hideMe 5s forwards;
 }
 
+.alert-error{
+  background-color: coral;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  animation: hideMe 5s forwards;
+}
 
 @keyframes hideMe{
   0%{

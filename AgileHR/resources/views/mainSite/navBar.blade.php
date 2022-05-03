@@ -3,7 +3,7 @@
   
   @auth    
     <a href="/activeSprintView">Active sprint board</a>
-    <a href="#">Backlog view</a>
+    <a href="/backLogView">Backlog view</a>
     @if (Auth::user()->isAdmin == 1)
     <a href="/manageUsers">Manage users</a>
     @endif

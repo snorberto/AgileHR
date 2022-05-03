@@ -62,6 +62,11 @@ class CandidateStatusSeeder extends Seeder
 
         DB::table('candidate_status')->insert([
             //string('TicketStatus');
+            'CandidateStatus' => 'Onboarding - contract signed'
+        ]);
+
+        DB::table('candidate_status')->insert([
+            //string('TicketStatus');
             'CandidateStatus' => 'Withdrew'
         ]);
 

@@ -27,9 +27,7 @@ require __DIR__.'/auth.php';
 
 Route::get('logout', "App\Http\Controllers\Auth\AuthenticatedSessionController@destroy");
 
-Route::get('activeSprintView', function () {
-    return view('subPages.ActiveSprintview');
-});
+
 
 Route::get('manageSprints', function () {
     return view('subPages.manageSprints');
@@ -78,6 +76,8 @@ Route::get('createCandidate', function() {
 });
 
 
+
+
 //Methods per subpages:
 //manageSprints:
 Route::resource('Sprints',"App\Http\Controllers\SprintsController");
@@ -109,8 +109,19 @@ Route::get('getAllpositions',"App\Http\Controllers\PositionsController@getAllpos
 Route::post('AddNewPosition',"App\Http\Controllers\PositionsController@AddNewPosition");
 Route::post('StartSearchPosition',"App\Http\Controllers\PositionsController@StartSearchPosition");
 Route::get("managePositions_deleteSelectedPosition/{id}", "App\Http\Controllers\PositionsController@deletePosition");
-Route::get("managePositions_SelectPosition/{id}", "App\Http\Controllers\PositionsController@SelectPosition");
+
 Route::post("managePosition_updateSelectedPosition/{id}", "App\Http\Controllers\PositionsController@editSelectedPosition");
+Route::get('maintainPositionStatus',"App\Http\Controllers\PositionStatusController@getPositionStatuses");
+Route::get('managePos_status_deleteSelectedStatus/{id}',"App\Http\Controllers\PositionStatusController@deleteSelectedStatus");
+Route::post("Edit_Selectedpos_status/{id}", "App\Http\Controllers\PositionStatusController@editSelectedStatus");
+Route::post("AddNewPos_status", "App\Http\Controllers\PositionStatusController@addNewStatus");
+
+Route::get('managePositions_SelectPosition/{id}/{viewName}', [
+    'uses'  => "App\Http\Controllers\PositionsController@SelectPosition",
+    'as'    => 'managePositions_SelectPosition'
+]);
+
+
 
 //manage Candidates:
 Route::resource('Candidate',"App\Http\Controllers\CandidatesController");
@@ -123,6 +134,55 @@ Route::post('manageCandidate_updateSelectedCandidate_details/{id}',"App\Http\Con
 Route::get("manageCandidate_deleteSelectedContactInfo/{id}{canID}", "App\Http\Controllers\CandidatesController@DeleteSelectedContactInfo");
 Route::post('manageCandidate_addNewLabel/{id}',"App\Http\Controllers\CandidatesController@AddNewLabel");
 Route::get("manageCandidate_deleteSelectedLabel/{id}{canID}", "App\Http\Controllers\CandidatesController@DeleteSelectedLabel");
+Route::get("maintainLabels", "App\Http\Controllers\labelsController@getAllLabels");
+Route::post("Edit_Selectedlabel_type/{id}", "App\Http\Controllers\labelsController@editSelectedLabel");
+Route::get('manageLabel_type_deleteSelectedLabel/{id}',"App\Http\Controllers\labelsController@deleteSelectedLabel");
+Route::post("AddNewLabel_type", "App\Http\Controllers\labelsController@AddNewLabel_type");
+Route::get('maintainContactInfo',"App\Http\Controllers\contactInfo_typesController@getAllContactInfoTypes");
+Route::post("manage_editSelectedContactInfoType/{id}", "App\Http\Controllers\contactInfo_typesController@editSelectedContactInfoType");
+Route::get('manage_deleteSelectedContactInfoType/{id}',"App\Http\Controllers\contactInfo_typesController@deleteSelectedContactInfoType");
+Route::post("AddNewContactInfo_type", "App\Http\Controllers\contactInfo_typesController@AddNewContactInfo_type");
+Route::get('maintainCandidateStatus',"App\Http\Controllers\CandidateStatusesController@getAllCandidate_status");
+Route::post("manage_editSelectedCanStatus/{id}", "App\Http\Controllers\CandidateStatusesController@editSelectedCandidateStatus");
+Route::get('manage_deleteSelectedCandidateStatus/{id}',"App\Http\Controllers\CandidateStatusesController@deleteSelectedCandidateStatus");
+Route::post("AddNewCandidateStatus", "App\Http\Controllers\CandidateStatusesController@AddNewCandidateStatus");
+Route::get('searchForCandidates',"App\Http\Controllers\CandidatesController@setUpSearchCandidate");
+Route::post('StartSearchCandidate',"App\Http\Controllers\CandidatesController@ReturnSearchCandidateResults");
+Route::post('StartSearchCandidatebyLabel',"App\Http\Controllers\CandidatesController@ReturnSearchCandidateResultsByLabel");
+
+
+
+
+
+
+//Active Sprint operations:
+Route::get('activeSprintView',"App\Http\Controllers\activeSprintController@Return_activeSprint");
+
+//backlog view operations:
+Route::get('backLogView',"App\Http\Controllers\backlogController@Return_backlogview");
+Route::post('backlog_assignToSprint/{id}',"App\Http\Controllers\backlogController@AssignSelectedToNewSprint");
+
+
+//Relationship management:
+Route::post('Relationships_addNew/{id}',"App\Http\Controllers\CandidateVsPositionRelshipController@AddNewEntry");
+Route::get('relship_showHistory/{id}', "App\Http\Controllers\CandidateVsPositionRelshipController@showPositionHistory");
+Route::get('relship_closePosition/{id}/{view}', [
+    'uses'  => "App\Http\Controllers\CandidateVsPositionRelshipController@relship_closePosition",
+    'as'    => 'relship_closePosition'
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

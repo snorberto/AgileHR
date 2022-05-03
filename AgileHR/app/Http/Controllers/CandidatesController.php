@@ -9,48 +9,40 @@ use App\Models\contact_information_types;
 use App\Models\labels;
 use App\Models\label_types;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+
 
 class CandidatesController extends Controller
 {
-    public function AddNewCandidate(Request $req){
-        
+    public function AddNewCandidate(Request $req){       
         
         $this->validate($req,[
             'can_Name' => 'required'
         ]);
-
-        /*$attachment="";
-        $new_name="";
-        $maxID = 0;
-        $maxID = candidates::max('ID');
-
-        if(is_null($maxID)){
-            $maxID = 0;
-        }
-
-        if(!is_null($req->can_attachment)){
-            $this->validate($req,[
-                'can_attachment'=>'mimes:pdf,docx'                
-            ]);
-            $attachment = $req->can_attachment;
-            $new_name = "can_".(string)$maxID + 1 . '.'.$attachment->getClientOriginalExtension();
-            $attachment->move(public_path('\attachments\candidate_cvs'), $new_name);
-        }*/
-
-        /*if($attachment!=""){
-            $msg = new candidates;
-            $msg->Name= $req->can_Name;
-            $msg->Description = $req->can_description;
-            $msg->Attachments = $new_name;
-            $msg->Link = $req->can_Link;
-            $msg->save();
-        }else{*/
-            $msg = new candidates;
-            $msg->Name= $req->can_Name;
-            $msg->Description = $req->can_description;
-            $msg->Link = $req->can_Link;
-            $msg->save();
-        //}
+        
+        $msg = new candidates;
+        $msg->Name= $req->can_Name;
+        $msg->Description = $req->can_description;
+        $msg->Link = $req->can_Link;
+        $msg->save();
+        
+         //update candidate names if there's multiple of the same:
+            $NameCounts = DB::table('candidate_details')
+            ->select('Name', DB::raw('COUNT(Name) as total_no'))
+            ->where('Name', '=', $req->can_Name)
+            ->groupBy('Name')
+            ->havingRaw('COUNT(Name) > ?', [1])->get();
+            if($NameCounts->count() > 0){
+                foreach($NameCounts as $nc){
+                    $names_and_ids = candidates::where('Name', '=', $nc->Name)->select('ID', 'Name')->get();
+                    foreach($names_and_ids as $nad){
+                        $form_data = array(
+                            'Name' => $nad->Name."-".$nad->ID
+                        );
+                        candidates::whereId($nad->ID)->update($form_data);
+                    }                
+                }            
+            }
         
         return redirect('createCandidate')->with('success', 'Candidate profile created successfully.');
     }
@@ -89,9 +81,31 @@ class CandidatesController extends Controller
         $label_types = label_types::select('ID','Label_value')->get();
         $contact_info_types = contact_information_types::select('ID', 'ContactType')->get();
                 
-        
+        $maxDatesperEntry = DB::table('candidate_positions_relationship')
+        ->select('candidate_id','position_id', DB::raw('MAX(updated_at) as maxDate'))
+        ->where('candidate_id', '=', $id)
+        ->groupBy('candidate_id', 'position_id');
 
-        return view('subPages.manageCandidate_subs.editCandidate', compact('can_details', 'can_contact_info', 'can_labels', 'label_types', 'contact_info_types'));
+        $latestEntries = DB::table('candidate_positions_relationship as cpr')
+        ->joinSub($maxDatesperEntry, 'latest_entry', function ($join) {
+            $join->on('cpr.position_id', '=', 'latest_entry.position_id')
+                ->on('cpr.candidate_id', '=', 'latest_entry.candidate_id')
+                ->on('cpr.updated_at', '=', 'latest_entry.maxDate');
+        })->join('position_statuses as ps', 'ps.ID', 'cpr.position_status_id')
+        ->join('candidate_status as cs', 'cs.ID', 'cpr.candidate_status_id')
+        ->join('candidate_details as cd', 'cd.ID', 'cpr.candidate_id')
+        ->join('positions as p', 'p.ID', 'cpr.position_id')
+        ->Leftjoin('users as u', 'u.ID', 'cpr.assignee_id')
+        ->select('cpr.Comment', 'u.ID as userID'
+            , 'u.username', 'ps.ID as posstatusID', 'ps.PositionStatus'
+            , 'cs.ID as canstatusID', 'cs.CandidateStatus'
+            , 'cd.ID as canID', 'cd.Name'
+            , 'cpr.updated_at'
+            , 'cpr.created_at'
+            , 'p.Title')
+        ->get();
+
+        return view('subPages.manageCandidate_subs.editCandidate', compact('can_details', 'can_contact_info', 'can_labels', 'label_types', 'contact_info_types', 'latestEntries'));
 
     }
 
@@ -188,5 +202,39 @@ class CandidatesController extends Controller
         $data = labels::findOrFail($id);
         $data->delete();
         return redirect('manageCandidate_SelectCandidate/'.$canID)->with('success', 'Label removed.');
+    }
+
+    public function ReturnSearchCandidateResults(Request $req)
+    {
+        $searchByName = candidates::where('Name', 'LIKE', '%'.$req->Searchbox_candidate.'%')
+        ->select('candidate_details.*');
+
+        $searchByDescription = candidates::where('Description', 'LIKE', '%'.$req->Searchbox_candidate.'%')
+        ->select('candidate_details.*')
+        ->union($searchByName)->get();
+
+        $candidates = $searchByDescription;
+
+        return view('subPages.manageCandidate_subs.SearchCandidateResults', ['candidates'=>$candidates]);
+    }
+
+    public function setUpSearchCandidate()
+    {
+        $msg = label_types::get();
+        return view('subPages.manageCandidate_subs.searchCandidate', ['label_types'=>$msg]);
+    }
+
+    public function ReturnSearchCandidateResultsByLabel(Request $req)
+    {
+        $this->validate($req,[
+            'selectedLabel' => 'required'
+        ]);
+
+        $candidates = labels::join('candidate_details as c', 'c.ID', 'labels.candidate_id')
+                          ->where('labels.label_type_id', '=', $req->selectedLabel)
+                          ->select('c.*')
+                          ->get();
+
+        return view('subPages.manageCandidate_subs.SearchCandidateResults', ['candidates'=>$candidates]);
     }
 }

@@ -7,7 +7,11 @@ use App\Models\Positions;
 use App\Models\User;
 use App\Models\Sprints;
 use App\Models\position_status;
+use App\Models\candidate_statuses;
+use App\Models\CandidateVsPositionsRelationship;
+use App\Models\candidates;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class PositionsController extends Controller
 {
@@ -83,7 +87,7 @@ class PositionsController extends Controller
         return redirect('managePosition')->with('success', 'Position deleted successfully.');
     }
 
-    public function SelectPosition($id){
+    public function SelectPosition($id, $viewName){
 
         $data = Positions::join('users', 'users.ID', 'positions.opener_id')
         ->join('position_statuses', 'position_statuses.ID', 'positions.position_status')
@@ -93,14 +97,45 @@ class PositionsController extends Controller
         ->where('positions.ID', '=', $id)
         ->first();
         
+        $relship = Positions::join('candidate_positions_relationship as cpr', 'cpr.position_id', 'positions.ID')
+                              ->whereIn('cpr.candidate_status_id', [7,10,11,12])
+                              ->where('cpr.position_id', '=', $id)
+                              ->select('cpr.ID', 'cpr.candidate_id')
+                              ->OrderBy('cpr.updated_at', 'desc')
+                              ->first();
 
         $usernames = User::select('username', 'ID')->get();
         $sprints = Sprints::where('is_closed', '=', '0')
                     ->select('sprint_name', 'ID')
                     ->get();        
         $pos_status = position_status::select('PositionStatus', 'ID')->get();
+        $view  = (string)$viewName;
 
-        return view('subPages.managePosition_subs.editPositions', compact('usernames', 'sprints', 'pos_status', 'data'));
+        $maxDatesperEntry = DB::table('candidate_positions_relationship')
+        ->select('candidate_id','position_id', DB::raw('MAX(updated_at) as maxDate'))
+        ->where('position_id', '=', $id)
+        ->groupBy('candidate_id', 'position_id');
+
+        $latestEntries = DB::table('candidate_positions_relationship as cpr')
+        ->joinSub($maxDatesperEntry, 'latest_entry', function ($join) {
+            $join->on('cpr.position_id', '=', 'latest_entry.position_id')
+                ->on('cpr.candidate_id', '=', 'latest_entry.candidate_id')
+                ->on('cpr.updated_at', '=', 'latest_entry.maxDate');
+        })->join('position_statuses as ps', 'ps.ID', 'cpr.position_status_id')
+        ->join('candidate_status as cs', 'cs.ID', 'cpr.candidate_status_id')
+        ->join('candidate_details as cd', 'cd.ID', 'cpr.candidate_id')
+        ->Leftjoin('users as u', 'u.ID', 'cpr.assignee_id')
+        ->select('cpr.Comment', 'u.ID as userID'
+            , 'u.username', 'ps.ID as posstatusID', 'ps.PositionStatus'
+            , 'cs.ID as canstatusID', 'cs.CandidateStatus'
+            , 'cd.ID as canID', 'cd.Name'
+            , 'cpr.updated_at'
+            , 'cpr.created_at')
+        ->get();
+
+        $can_status = candidate_statuses::all();
+        $candidate_list = candidates::all();
+        return view('subPages.managePosition_subs.editPositions', compact('usernames', 'sprints', 'pos_status', 'data', 'view', 'relship', 'latestEntries', 'can_status', 'candidate_list'));
     }
 
     public function editSelectedPosition(Request $req, $id){
@@ -142,7 +177,66 @@ class PositionsController extends Controller
         
 
         Positions::whereId($id)->update($form_data);
-        return redirect('managePosition')->with('success', 'Position updated successfully.');
+
+        //if position's status is cancelled:
+            if($req->selected_pos_status == 5){
+
+                $latest_assignee = Positions::whereId($id)->select('assignee_id')->first();
+
+                $maxDatesperEntry = DB::table('candidate_positions_relationship')
+                ->select('candidate_id','position_id', DB::raw('MAX(updated_at) as maxDate'))
+                ->where('position_id', '=', $id)
+                ->groupBy('candidate_id', 'position_id');
+        
+                $latestEntries = DB::table('candidate_positions_relationship as cpr')
+                ->joinSub($maxDatesperEntry, 'latest_entry', function ($join) {
+                    $join->on('cpr.position_id', '=', 'latest_entry.position_id')
+                        ->on('cpr.candidate_id', '=', 'latest_entry.candidate_id')
+                        ->on('cpr.updated_at', '=', 'latest_entry.maxDate');
+                })->select('cpr.*')
+                ->whereNotIn('cpr.candidate_status_id', [7,10,11])
+                ->get();
+        
+                //now insert records to the relationship table:
+                foreach($latestEntries as $le){
+                    $msg = new CandidateVsPositionsRelationship;
+                    $msg->candidate_id= $le->candidate_id;
+                    $msg->position_id = $id;
+                    $msg->candidate_status_id = 12;
+                    $msg->position_status_id = 5;
+                    if(!is_null($latest_assignee->assignee_id)){
+                        $msg->assignee_id = $latest_assignee->assignee_id;
+                    }
+                    $msg->Comment = 'Automatically closed candidate application, reason: position cancelled';
+                    $msg->save();   
+                } 
+            }
+
+        if($req->editPos_siteName == "ActiveSprint"){
+            if($req->selected_pos_status == 5){
+                return redirect('activeSprintView')->with('success', 'Position updated and applications cancelled.');
+            }
+            else{
+                return redirect('activeSprintView')->with('success', 'Position updated successfully.');
+            }
+            
+        }
+        else if($req->editPos_siteName == "backlogView"){
+            if($req->selected_pos_status == 5){
+                return redirect('backLogView')->with('success', 'Position updated and applications cancelled.');
+            }
+            else{
+                return redirect('backLogView')->with('success', 'Position updated successfully.');
+            }
+        }
+        else{
+            if($req->selected_pos_status == 5){
+                return redirect('managePosition')->with('success', 'Position updated and applications cancelled.');
+            }
+            else{
+                return redirect('managePosition')->with('success', 'Position updated successfully.');
+            }
+        }
     }
 
 
